@@ -1,0 +1,63 @@
+$(function() {
+	'use strict';
+
+	//変数
+	var
+		$table     	= $("#table"),
+		$li         = $("<li>"),
+		$ul         = $("<ul>"),
+		$img        = $("<img>"),
+		cards      	= [],
+		kind       	= ["c","d","h","s"],
+		cards_len,
+		stage_cards = [],
+		work_array  = [];
+
+	//処理
+
+	for(var i = 0; i < 4; i++) {
+		for(var j = 1; j <= 13; j++) {
+			cards.push(kind[i] + ("0" + j).slice(-2) + ".png");
+		}
+	}
+
+	cards_len = cards.length;
+
+	shuffle();
+
+	// console.log(cards);
+
+	for(var i = 0; i < 7; i++) {
+		$ul.clone().appendTo($table);
+		for(var j = 0; j < 5; j++) {
+			work_array.push(cards.pop());
+			$li
+				.clone()
+				.appendTo($table.find("ul").eq(i))
+				.data("num", work_array[j].replace(/[^0-9]/g, ""))
+				.append(
+					$img
+						.clone()
+						.attr("src", "../images/" + work_array[j])
+				)
+		}
+		stage_cards.push(work_array);
+		work_array = [];
+	}
+
+	//関数
+
+	function shuffle() {
+		var
+			len = cards_len - 1,
+			tmp,
+			j;
+
+		for(var i = len; i > 0; i--) {
+			j = Math.floor(Math.random() * (i + 1));
+			tmp = cards[i];
+			cards[i] = cards[j];
+			cards[j] = tmp;
+		}
+	}
+});
