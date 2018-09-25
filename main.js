@@ -7,11 +7,17 @@ $(function() {
 		$li         = $("<li>"),
 		$ul         = $("<ul>"),
 		$img        = $("<img>"),
+		$deck       = $("#deck"),
+		$set        = $("#set").find("img"),
 		cards      	= [],
 		kind       	= ["c","d","h","s"],
 		cards_len,
 		stage_cards = [],
-		work_array  = [];
+		work_array  = [],
+		set_flag    = false,
+		col_length,
+		set_card,
+		compare_card;
 
 	//処理
 
@@ -34,7 +40,6 @@ $(function() {
 			$li
 				.clone()
 				.appendTo($table.find("ul").eq(i))
-				.data("num", work_array[j].replace(/[^0-9]/g, ""))
 				.append(
 					$img
 						.clone()
@@ -45,7 +50,32 @@ $(function() {
 		work_array = [];
 	}
 
+	$deck.on("click", function() {
+		if(!set_flag) {
+			set_flag = true;
+			set_card = cards.pop();
+			$set.attr("src", "../images/" + set_card);
+			compareCards(set_card.replace(/[^0-9]/g, ""));
+		}
+	});
+
 	//関数
+
+	function compareCards(set_num) {
+		set_num = parseInt(set_num, 10);
+		for(var i = 0; i < 7; i++) {
+			col_length = stage_cards[i].length - 1;
+			compare_card = stage_cards[i][col_length].replace(/[^0-9]/g, "");
+			compare_card = parseInt(compare_card, 10);
+
+			if(set_num === compare_card + 1) {
+				console.log(i);
+			}
+			if(set_num === compare_card - 1) {
+				console.log(i);
+			}
+		}
+	}
 
 	function shuffle() {
 		var
